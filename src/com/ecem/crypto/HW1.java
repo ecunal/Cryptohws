@@ -10,21 +10,35 @@ public class HW1 {
 
 	public static void main(String[] args) {
 
-		//String plaintext = "cowardsdiemanytimesbeforetheirdeathsthevaliantnevertasteofdeathbutonceofallthewondersthatiyethavehearditseemstomemoststrangethatmenshouldfearseeingthatdeathanecessaryendwillcomewhenitwillcome";
-		//String key = "william";
+		/* Question 1 */
+		String plaintext = "cowardsdiemanytimesbeforetheirdeathsthevaliantnevertasteofdeathbutonceofallthewondersthatiyethavehearditseemstomemoststrangethatmenshouldfearseeingthatdeathanecessaryendwillcomewhenitwillcome";
+		String key = "william";
 
-		//System.out.println(vigenere(plaintext, key));
+		System.out.println(vigenere(plaintext, key));
 		
-		//affine("xaadpevxkmkpuaxnfxvrjqxhvxmtaacpn");
+		/* Question 2 */
+		
+		frequencyAnalysis("Zoo lu low. Mlgsrmt vohv vevi. Vevi girvw. Vevi uzrovw. Ml nzggvi. Gib ztzrm. Uzro ztzrm. Uzro yvggvi. Zoo lu low. Mlgsrmt vohv vevi. Vevi girvw. Vevi uzrovw. Ml nzggvi. Gib ztzrm. Uzro ztzrm. Uzro yvggvi. Zoo lu low. Mlgsrmt vohv vevi. Vevi girvw. Vevi uzrovw. Ml nzggvi. Gib ztzrm. Uzro ztzrm. Uzro yvggvi.");
+		
+		/* Question 4 */
+		
+		affine("xaadpevxkmkpuaxnfxvrjqxhvxmtaacpn");
+		
+		/* Question 7 */
 		
 		char[] cipher = "jwmbcofnemoazxqjlkpimmcrmtbkpugvecwsbgpzkohzvunklugvbsiovbpvzzzwavihywhaddaklvtbnbgpknqultxwtdqjmzwazwtemjqmmwusrsmnircmglgplkkhomybneiqmtapoaklvimzylyenclzwcpnkvcepkpdwxrmrditlcpazznjbnmvtkqmclnzmqlnozrengqkplglupvzcqppkadeaucszvgadnwtlnymcqssiywlpenismmlccotklkljuzdcvgudoagvbswvimkicpnxpkpzdxkzrfijmcewgkbzuvimjpouzdpoaelqzpeftyyttzkqmcmzcqynuzrlvipndakzutkkaczvwchiwzmocwsqrpazwllskazyknwssmcmzwbngfzdkzmzzunzyqytdzvnqrswxadcwiqmlvzmzmixvmlocmkwxgassqyxqtuklnyyaqwzbkzhomybgpzuicdwlaolqtqmdmgzbswlokzzeimooximoijddybazdsmmqupaaxezwjagptzmqlvjknxnuzsltrqmepkvzxmunzamgazybcwllvjcknqtmzomrbnmwywvswspdpvbqrtwtazdivzhykkar".toCharArray();
 		
-		//vigenereAttack(cipher, vigenereKeyLength(cipher));
+		vigenereAttack(cipher, vigenereKeyLength(cipher));
 		
 		vigenereDecryptor(cipher, "gizli");
 		
 	}
-
+	
+	/* Question 1: Vigenere cipher encryptor
+	 * Takes a string plaintext and string key as input,
+	 * returns the ciphertext as output.
+	 */
+	
 	public static String vigenere(String plain, String key) {
 
 		if(plain == null || key == null) return null;
@@ -40,6 +54,12 @@ public class HW1 {
 		return b.toString();
 	}
 	
+	/*
+	 * Question 4: Affine cipher brute force attack
+	 * with only ciphertext given as input.
+	 * Prints out all possible plaintexts along with the decryption keys.
+	 */
+	
 	public static void affine(String cipher) {
 		
 		for(int a=1; a<26; a++) {
@@ -54,7 +74,6 @@ public class HW1 {
 					c = (a*c + b)%26;
 					
 					System.out.print(alphabet.charAt(c));
-					
 				}
 				
 				System.out.println();
@@ -62,11 +81,16 @@ public class HW1 {
 		}
 	}
 	
+	/*
+	 * Question 7: Shifts the given cipher 1 by 1
+	 * and counts the letter coincidences with the original one.
+	 * Prints out the shift amount and corresponding number of coincidences.
+	 */
 	public static int vigenereKeyLength(char[] cipher) {
 		
 		int c = 0, key = 0;
 		
-		for(int i=1; i<8; i++) {
+		for(int i=1; i<10; i++) {
 			
 			char[] shiftedCipher = new char[cipher.length];
 			
@@ -98,6 +122,14 @@ public class HW1 {
 		
 	}
 	
+	/* Question 7 cont'd. : Using given keylength k,
+	 * splits the original ciphertext into k subciphertexts
+	 * as the first sub-ciphertext having 1st, (k+1)th, (2k +1)th... letters
+	 * of original ciphertext.
+	 * 
+	 * Counts the frequencies of each letter in each subciphertext
+	 * using the method at the bottom called "frequencyAnalysis".
+	 */
 	public static void vigenereAttack(char[] cipher, int keyLength) {
 		
 		if(keyLength < 1) return;
@@ -119,6 +151,10 @@ public class HW1 {
 		}
 	}
 	
+	/*
+	 * Question 7: Plaintext is not asked in q7 but I used this method to
+	 * decrypt the given ciphertext to check whether I found the right key or not.
+	 */
 	public static void vigenereDecryptor(char[] cipher, String key) {
 		
 		int i=0;
@@ -134,11 +170,17 @@ public class HW1 {
 		
 	}
 	
+	/*
+	 * Counts the letter frequencies of given string s.
+	 * Prints out the letter-frequency pair without an order.
+	 */
 	public static void frequencyAnalysis(String s) {
 		
 		Map<Character, Integer> counts = new HashMap<Character, Integer>();
 		
-		for(char c: s.toCharArray()) {
+		for(char c: s.toLowerCase().toCharArray()) {
+			
+			if(c == ' ' || c == '.') continue;
 			
 			if(counts.containsKey(c)) {
 				counts.put(c, counts.get(c) + 1);
